@@ -8,8 +8,11 @@ public class WanderingAI : MonoBehaviour
     public float wanderRadius = 10f;
     public float minWanderTimer = 3f;
     public float maxWanderTimer = 7f;
+    public float detectionRadius = 5f;
+    public Transform targetAgent; // The agent to follow
+    public float runSpeed = 10f;
+    public float walkSpeed = 3.5f;
 
-    private Transform target;
     private NavMeshAgent agent;
     private float timer;
 
@@ -21,11 +24,25 @@ public class WanderingAI : MonoBehaviour
 
     void Update()
     {
+        if (targetAgent != null)
+        {
+            float distanceToAgent = Vector3.Distance(transform.position, targetAgent.position);
+
+            if (distanceToAgent <= detectionRadius)
+            {
+                // The agent is within the detection radius, so follow it.
+                agent.speed = runSpeed;
+                agent.SetDestination(targetAgent.position);
+                return; // Don't perform wandering behavior when following.
+            }
+        }
+
         timer -= Time.deltaTime;
 
         if (timer <= 0f)
         {
             Vector3 newPos = RandomNavSphere(transform.position, wanderRadius, -1);
+            agent.speed = walkSpeed; // Switch back to walking speed for wandering.
             agent.SetDestination(newPos);
             timer = Random.Range(minWanderTimer, maxWanderTimer);
         }

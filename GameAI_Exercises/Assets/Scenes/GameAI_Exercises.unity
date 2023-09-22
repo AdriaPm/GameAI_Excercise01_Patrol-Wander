@@ -1341,6 +1341,11 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!4 &270402365 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6631964419132099031, guid: 35d11d1e1dd397942b5024ee78060e27, type: 3}
+  m_PrefabInstance: {fileID: 270402361}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &273500542
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2850,6 +2855,10 @@ MonoBehaviour:
   wanderRadius: 20
   minWanderTimer: 3
   maxWanderTimer: 7
+  detectionRadius: 20
+  targetAgent: {fileID: 270402365}
+  runSpeed: 20
+  walkSpeed: 3.5
 --- !u!1001 &555264702
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5994,6 +6003,10 @@ MonoBehaviour:
   wanderRadius: 20
   minWanderTimer: 3
   maxWanderTimer: 7
+  detectionRadius: 5
+  targetAgent: {fileID: 0}
+  runSpeed: 10
+  walkSpeed: 3.5
 --- !u!195 &1207099751
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -7026,6 +7039,10 @@ MonoBehaviour:
   wanderRadius: 20
   minWanderTimer: 3
   maxWanderTimer: 7
+  detectionRadius: 5
+  targetAgent: {fileID: 0}
+  runSpeed: 10
+  walkSpeed: 3.5
 --- !u!195 &1288523834
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -11498,6 +11515,10 @@ MonoBehaviour:
   wanderRadius: 20
   minWanderTimer: 3
   maxWanderTimer: 7
+  detectionRadius: 5
+  targetAgent: {fileID: 0}
+  runSpeed: 10
+  walkSpeed: 3.5
 --- !u!195 &2146933011
 NavMeshAgent:
   m_ObjectHideFlags: 0
