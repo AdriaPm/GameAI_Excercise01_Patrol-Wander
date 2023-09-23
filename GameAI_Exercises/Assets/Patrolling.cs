@@ -6,6 +6,14 @@ using UnityEngine.AI;
 
 public class Patrolling : MonoBehaviour
 {
+
+    public float detectionRadius = 5.0f;
+    public LayerMask ghostLayer;
+    public GameObject alertIconPrefab; 
+    private List<AlertIcon> alertIcons = new List<AlertIcon>();
+    public Transform ghostManager;
+    public float alertIconHeightOffset = 4.0f;
+
     public Transform[] points;
         private int destPoint = 0;
         private NavMeshAgent agent;
@@ -19,7 +27,13 @@ public class Patrolling : MonoBehaviour
             // approaches a destination point).
             agent.autoBraking = false;
 
-            GotoNextPoint();
+            foreach (Transform ghostAgent in ghostManager)
+        {
+            GameObject alertIconObject = Instantiate(alertIconPrefab, ghostAgent.position, Quaternion.identity);
+            AlertIcon alertIcon = alertIconObject.GetComponent<AlertIcon>();
+            alertIcon.Hide();
+            alertIcons.Add(alertIcon);
+        }
         }
 
 
@@ -40,7 +54,59 @@ public class Patrolling : MonoBehaviour
         void Update () {
             // Choose the next destination point when the agent gets
             // close to the current one.
-            if (!agent.pathPending && agent.remainingDistance < 0.5f)
+            if (!agent.pathPending && agent.remainingDistance < 0.5f){
                 GotoNextPoint();
+            }
+            UpdateAlertIconPositions();
+            DetectGhosts();
+
         }
+
+        private void DetectGhosts()
+    {
+        foreach (Transform ghostAgent in ghostManager)
+        {
+            float distanceToGhost = Vector3.Distance(transform.position, ghostAgent.position);
+
+            if (distanceToGhost <= detectionRadius)
+            {
+                // A ghost is detected, show the corresponding alert icon
+                int ghostIndex = GetChildIndex(ghostManager, ghostAgent);
+                if (ghostIndex >= 0 && ghostIndex < alertIcons.Count)
+                {
+                    alertIcons[ghostIndex].Show();
+                }
+            }
+            else
+            {
+                // No ghosts detected, hide the corresponding alert icon
+                int ghostIndex = GetChildIndex(ghostManager, ghostAgent);
+                if (ghostIndex >= 0 && ghostIndex < alertIcons.Count)
+                {
+                    alertIcons[ghostIndex].Hide();
+                }
+            }
+        }
+    }
+
+    private void UpdateAlertIconPositions()
+    {
+        for (int i = 0; i < alertIcons.Count; i++)
+        {
+            alertIcons[i].transform.position = ghostManager.GetChild(i).position + Vector3.up * alertIconHeightOffset;
+        }
+    }
+
+    // Get the index of a child within a Transform component
+    private int GetChildIndex(Transform parent, Transform child)
+    {
+        for (int i = 0; i < parent.childCount; i++)
+        {
+            if (parent.GetChild(i) == child)
+            {
+                return i;
+            }
+        }
+        return -1; // Child not found
+    }
 }

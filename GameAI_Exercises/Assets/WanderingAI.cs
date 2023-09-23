@@ -41,22 +41,13 @@ public class WanderingAI : MonoBehaviour
 
         if (timer <= 0f)
         {
-            Vector3 newPos = RandomNavSphere(transform.position, wanderRadius, -1);
+            // Generate a random position within a circle on the XZ plane
+            Vector3 randomDirection = Random.insideUnitCircle.normalized * wanderRadius;
+            Vector3 newPos = new Vector3(randomDirection.x, 0f, randomDirection.y) + transform.position;
+
             agent.speed = walkSpeed; // Switch back to walking speed for wandering.
             agent.SetDestination(newPos);
             timer = Random.Range(minWanderTimer, maxWanderTimer);
         }
-    }
-
-    public static Vector3 RandomNavSphere(Vector3 origin, float dist, int layermask)
-    {
-        Vector3 randDirection = Random.insideUnitSphere * dist;
-
-        randDirection += origin;
-
-        NavMeshHit navHit;
-        NavMesh.SamplePosition(randDirection, out navHit, dist, layermask);
-
-        return navHit.position;
     }
 }
