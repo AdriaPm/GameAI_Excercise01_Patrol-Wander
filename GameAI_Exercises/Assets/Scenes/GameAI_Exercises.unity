@@ -1351,6 +1351,9 @@ MonoBehaviour:
   spotlight: {fileID: 1712891978}
   flickerIntensity: 2
   flickerSpeed: 1
+  copIconPrefab: {fileID: 5865395427577603068, guid: 937c135de12e5ed428d411953dad816a, type: 3}
+  copIconHeightOffset: 1
+  copIconHorizontalOffset: -1
   points:
   - {fileID: 1487236043}
   - {fileID: 812088863}

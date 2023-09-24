@@ -21,6 +21,12 @@ public class Patrolling : MonoBehaviour
     private bool isFlickering = false;
     private float initialIntensity;
 
+    public GameObject copIconPrefab;
+    private GameObject copIcon;
+    public float copIconHeightOffset = 1.0f; 
+    public float copIconHorizontalOffset = 1.0f;
+    
+
     public Transform[] points;
         private int destPoint = 0;
         private NavMeshAgent agent;
@@ -43,6 +49,11 @@ public class Patrolling : MonoBehaviour
             }
 
             initialIntensity = spotlight.intensity;
+
+            Vector3 initialCopIconPosition = transform.position + Vector3.up * copIconHeightOffset + Vector3.right * copIconHorizontalOffset;
+
+            copIcon = Instantiate(copIconPrefab, initialCopIconPosition, Quaternion.identity);
+            copIcon.SetActive(false);
         }
 
 
@@ -68,11 +79,18 @@ public class Patrolling : MonoBehaviour
             }
 
             if (isFlickering)
-        {
-            ToggleSpotlightFlicker();
-        }
+            {
+             ToggleSpotlightFlicker();
+            }
 
             UpdateAlertIconPositions();
+
+            if (copIcon != null)
+            {
+                Vector3 copIconPosition = transform.position + Vector3.up * copIconHeightOffset + Vector3.right * copIconHorizontalOffset;
+                copIcon.transform.position = copIconPosition;
+            }
+
             DetectGhosts();
 
         }
@@ -93,11 +111,11 @@ public class Patrolling : MonoBehaviour
                 {
                     alertIcons[ghostIndex].Show();
                 }
-
                 ghostsDetected = true;
             }
             else
             {
+                
                 // No ghosts detected, hide the corresponding alert icon
                 int ghostIndex = GetChildIndex(ghostManager, ghostAgent);
                 if (ghostIndex >= 0 && ghostIndex < alertIcons.Count)
@@ -110,10 +128,13 @@ public class Patrolling : MonoBehaviour
         // Handle spotlight flickering based on ghost detection
         if (ghostsDetected)
         {
+            ShowCopIcon();
             StartFlickering();
+            
         }
         else
         {
+            HideCopIcon();
             StopFlickering();
         }
     }
@@ -164,6 +185,23 @@ public class Patrolling : MonoBehaviour
         else
         {
             spotlight.intensity = initialIntensity;
+        }
+    }
+
+    private void ShowCopIcon()
+    {
+        if (copIcon != null)
+        {
+            copIcon.SetActive(true);
+        }
+    }
+
+    // Hide the cop icon
+    private void HideCopIcon()
+    {
+        if (copIcon != null)
+        {
+            copIcon.SetActive(false);
         }
     }
 }
