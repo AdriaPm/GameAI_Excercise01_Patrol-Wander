@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class LookAroundScript : MonoBehaviour 
 {
-	public float rotMult = 4f;
+	public float mouseSensibility = 4f;
 
 	float yaw = 0f;
 	float pitch = 0f;
@@ -20,8 +20,8 @@ public class LookAroundScript : MonoBehaviour
 
 	private void Update()
 	{
-		yaw += rotMult * Input.GetAxis("Mouse X");
-		pitch -= rotMult * Input.GetAxis("Mouse Y");
+		yaw += mouseSensibility * Input.GetAxis("Mouse X");
+		pitch -= mouseSensibility * Input.GetAxis("Mouse Y");
 		pitch = Mathf.Clamp(pitch, maxY, minY); // Clamp viewing up and down
 
 		transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);

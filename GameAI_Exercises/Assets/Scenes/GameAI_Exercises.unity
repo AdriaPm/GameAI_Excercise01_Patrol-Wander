@@ -1182,6 +1182,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0.7199993
       objectReference: {fileID: 0}
+    - target: {fileID: 2976425484535382105, guid: 35d11d1e1dd397942b5024ee78060e27, type: 3}
+      propertyPath: m_TargetDisplay
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3127629364233361861, guid: 35d11d1e1dd397942b5024ee78060e27, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.16000018
@@ -1317,6 +1321,10 @@ PrefabInstance:
     - target: {fileID: 6644603938449114179, guid: 35d11d1e1dd397942b5024ee78060e27, type: 3}
       propertyPath: m_Name
       value: Cop
+      objectReference: {fileID: 0}
+    - target: {fileID: 6664587813920434523, guid: 35d11d1e1dd397942b5024ee78060e27, type: 3}
+      propertyPath: m_TargetDisplay
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7713908475348470613, guid: 35d11d1e1dd397942b5024ee78060e27, type: 3}
       propertyPath: m_LocalPosition.x
@@ -5550,7 +5558,7 @@ Camera:
     m_Bits: 4294967295
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
-  m_TargetDisplay: 1
+  m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
   m_AllowMSAA: 1
@@ -5586,7 +5594,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72729f89597c1f944a855ee051395a84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotMult: 4
+  mouseSensibility: 2
   maxY: 30
   minY: 90
 --- !u!1001 &975429098
