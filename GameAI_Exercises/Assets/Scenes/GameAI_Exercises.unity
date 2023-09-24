@@ -1313,13 +1313,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 750d58687273585468921bad18fde0a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  detectionRadius: 20
+  detectionRadius: 10
   ghostLayer:
     serializedVersion: 2
     m_Bits: 0
-  alertIconPrefab: {fileID: 7736477762758238190, guid: 8bd6cdb569362fc44af642071ecfb42c, type: 3}
   ghostManager: {fileID: 688037310}
+  alertIconPrefab: {fileID: 7736477762758238190, guid: 8bd6cdb569362fc44af642071ecfb42c, type: 3}
   alertIconHeightOffset: 4
+  spotlight: {fileID: 1712891978}
+  flickerIntensity: 2
+  flickerSpeed: 1
   points:
   - {fileID: 1487236043}
   - {fileID: 812088863}
@@ -9248,6 +9251,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 435160, guid: 6e131b51e1e3a994692dad30cc8065ec, type: 3}
   m_PrefabInstance: {fileID: 1709188604}
+  m_PrefabAsset: {fileID: 0}
+--- !u!108 &1712891978 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 5831722567496140224, guid: 35d11d1e1dd397942b5024ee78060e27, type: 3}
+  m_PrefabInstance: {fileID: 270402361}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1716234348
 PrefabInstance:

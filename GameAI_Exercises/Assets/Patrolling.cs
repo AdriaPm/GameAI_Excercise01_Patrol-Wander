@@ -9,10 +9,17 @@ public class Patrolling : MonoBehaviour
 
     public float detectionRadius = 5.0f;
     public LayerMask ghostLayer;
+    public Transform ghostManager;
+
     public GameObject alertIconPrefab; 
     private List<AlertIcon> alertIcons = new List<AlertIcon>();
-    public Transform ghostManager;
     public float alertIconHeightOffset = 4.0f;
+    
+    public Light spotlight;
+    public float flickerIntensity = 5.0f; // Intensity for flickering
+    public float flickerSpeed = 1.0f; // Speed of the flickering
+    private bool isFlickering = false;
+    private float initialIntensity;
 
     public Transform[] points;
         private int destPoint = 0;
@@ -28,12 +35,14 @@ public class Patrolling : MonoBehaviour
             agent.autoBraking = false;
 
             foreach (Transform ghostAgent in ghostManager)
-        {
-            GameObject alertIconObject = Instantiate(alertIconPrefab, ghostAgent.position, Quaternion.identity);
-            AlertIcon alertIcon = alertIconObject.GetComponent<AlertIcon>();
-            alertIcon.Hide();
-            alertIcons.Add(alertIcon);
-        }
+            {
+                GameObject alertIconObject = Instantiate(alertIconPrefab, ghostAgent.position, Quaternion.identity);
+                AlertIcon alertIcon = alertIconObject.GetComponent<AlertIcon>();
+                alertIcon.Hide();
+                alertIcons.Add(alertIcon);
+            }
+
+            initialIntensity = spotlight.intensity;
         }
 
 
@@ -57,13 +66,21 @@ public class Patrolling : MonoBehaviour
             if (!agent.pathPending && agent.remainingDistance < 0.5f){
                 GotoNextPoint();
             }
+
+            if (isFlickering)
+        {
+            ToggleSpotlightFlicker();
+        }
+
             UpdateAlertIconPositions();
             DetectGhosts();
 
         }
 
         private void DetectGhosts()
-    {
+        {
+        bool ghostsDetected = false;
+
         foreach (Transform ghostAgent in ghostManager)
         {
             float distanceToGhost = Vector3.Distance(transform.position, ghostAgent.position);
@@ -76,6 +93,8 @@ public class Patrolling : MonoBehaviour
                 {
                     alertIcons[ghostIndex].Show();
                 }
+
+                ghostsDetected = true;
             }
             else
             {
@@ -86,6 +105,16 @@ public class Patrolling : MonoBehaviour
                     alertIcons[ghostIndex].Hide();
                 }
             }
+        }
+
+        // Handle spotlight flickering based on ghost detection
+        if (ghostsDetected)
+        {
+            StartFlickering();
+        }
+        else
+        {
+            StopFlickering();
         }
     }
 
@@ -108,5 +137,33 @@ public class Patrolling : MonoBehaviour
             }
         }
         return -1; // Child not found
+    }
+
+    // Start spotlight flickering
+    private void StartFlickering()
+    {
+        isFlickering = true;
+        InvokeRepeating("ToggleSpotlightFlicker", 0f, flickerSpeed);
+    }
+
+    // Stop spotlight flickering
+    private void StopFlickering()
+    {
+        isFlickering = false;
+        CancelInvoke("ToggleSpotlightFlicker");
+        spotlight.intensity = initialIntensity; // Restore the initial intensity
+    }
+
+    // Toggle the spotlight intensity to create a flicker effect
+    private void ToggleSpotlightFlicker()
+    {
+        if (spotlight.intensity == initialIntensity)
+        {
+            spotlight.intensity = flickerIntensity;
+        }
+        else
+        {
+            spotlight.intensity = initialIntensity;
+        }
     }
 }
