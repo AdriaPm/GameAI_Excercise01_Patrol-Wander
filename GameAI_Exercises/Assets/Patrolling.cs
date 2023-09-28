@@ -26,6 +26,9 @@ public class Patrolling : MonoBehaviour
     public float copIconHeightOffset = 1.0f; 
     public float copIconHorizontalOffset = 1.0f;
     
+    public List<Transform> waypoints; // List of waypoints the AI will patrol
+    private int currentWaypointIndex = -1;
+    private bool isPatrolling = false;
 
     public Transform[] points;
         private int destPoint = 0;
@@ -39,6 +42,17 @@ public class Patrolling : MonoBehaviour
             // between points (ie, the agent doesn't slow down as it
             // approaches a destination point).
             agent.autoBraking = false;
+
+            if (waypoints.Count == 0)
+        {
+            Debug.LogError("No waypoints assigned to the AI agent.");
+            enabled = false; // Disable the script if no waypoints are assigned.
+            return;
+        }
+
+        // Randomly select the initial waypoint and direction.
+        currentWaypointIndex = Random.Range(0, waypoints.Count);
+        SetDestination(waypoints[currentWaypointIndex].position);
 
             foreach (Transform ghostAgent in ghostManager)
             {
@@ -57,25 +71,19 @@ public class Patrolling : MonoBehaviour
         }
 
 
-        void GotoNextPoint() {
-            // Returns if no points have been set up
-            if (points.Length == 0)
-                return;
-
-            // Set the agent to go to the currently selected destination.
-            agent.destination = points[destPoint].position;
-
-            // Choose the next point in the array as the destination,
-            // cycling to the start if necessary.
-            destPoint = (destPoint + 1) % points.Length;
+        void SetDestination(Vector3 destination)
+        {
+            agent.SetDestination(destination);
+            isPatrolling = true;
         }
 
-
         void Update () {
-            // Choose the next destination point when the agent gets
-            // close to the current one.
-            if (!agent.pathPending && agent.remainingDistance < 0.5f){
-                GotoNextPoint();
+            // Check if the AI has reached its current waypoint.
+            if (isPatrolling && !agent.pathPending && agent.remainingDistance < 0.1f)
+            {
+            // Move to the next waypoint in a loop.
+            currentWaypointIndex = (currentWaypointIndex + 1) % waypoints.Count;
+            SetDestination(waypoints[currentWaypointIndex].position);
             }
 
             if (isFlickering)
