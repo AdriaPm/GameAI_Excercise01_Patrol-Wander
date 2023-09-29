@@ -6,6 +6,7 @@ The main objective of this exercise was to implement some of the most basic AI a
 
 The first agent (the cop) uses a patrolling movement using waypoints and the ghost smoothing technique. The initial point and direction are randomly selected. Then the other agents (the ghosts) move using a wandering movement until they detect the cop close, and then they start chasing him. Some other fancy features were implemented, as well as some different cameras on "Display" 1 , 2 and 3.
 
+Click [here](https://youtu.be/pzOhQ3oXevI) to watch the showcase video of Exercise 01: Patrolling & Wander algorithms.
 
 ## Repository Link
 Click [here](https://github.com/AdriaPm/GameAI_Excercise01_Patrol-Wander) to check out our Github repository. You can find the Unity project folder and a small showcase video inside of it.
